@@ -4,83 +4,69 @@ function App() {
 
     const [personas, setPersonas] = useState([]);
 
-    const [formulario, setFormulario] = useState({
-        nombre: "",
-        apellido: "",
-        edad: "",
-        altura: "",
-        peso: ""
-    });
-
-    function manejarCambio(e) {
-
-        setFormulario({
-            ...formulario,
-            [e.target.id]: e.target.value
-        });
-
-    }
+    const [nombre, setNombre] = useState("");
+    const [apellido, setApellido] = useState("");
+    const [edad, setEdad] = useState("");
+    const [altura, setAltura] = useState("");
+    const [peso, setPeso] = useState("");
 
     function agregarPersona(e) {
 
         e.preventDefault();
 
-        setPersonas([
-            ...personas,
-            {
-                ...formulario,
-                edad: Number(formulario.edad),
-                altura: Number(formulario.altura),
-                peso: Number(formulario.peso)
-            }
-        ]);
+        const nuevaPersona = {
+            nombre,
+            apellido,
+            edad,
+            altura,
+            peso
+        };
 
-        setFormulario({
-            nombre: "",
-            apellido: "",
-            edad: "",
-            altura: "",
-            peso: ""
-        });
+        setPersonas([...personas, nuevaPersona]);
+
+        setNombre("");
+        setApellido("");
+        setEdad("");
+        setAltura("");
+        setPeso("");
 
     }
 
     function eliminarPersona(indice) {
 
-        const nuevasPersonas = personas.filter((_, i) => i !== indice);
+        const copia = [...personas];
 
-        setPersonas(nuevasPersonas);
+        copia.splice(indice, 1);
+
+        setPersonas(copia);
 
     }
 
     return (
 
-        <>
+        <div>
 
             <form onSubmit={agregarPersona}>
 
                 <label>Nombre</label>
                 <input
-                    id="nombre"
-                    value={formulario.nombre}
-                    onChange={manejarCambio}
+                    value={nombre}
+                    onChange={(e)=>setNombre(e.target.value)}
                     required
                 />
 
                 <label>Apellido</label>
                 <input
-                    id="apellido"
-                    value={formulario.apellido}
-                    onChange={manejarCambio}
+                    value={apellido}
+                    onChange={(e)=>setApellido(e.target.value)}
                     required
                 />
 
                 <label>Edad</label>
                 <input
                     type="number"
-                    id="edad"
-                    value={formulario.edad}
-                    onChange={manejarCambio}
+                    value={edad}
+                    onChange={(e)=>setEdad(e.target.value)}
                     required
                 />
 
@@ -88,9 +74,8 @@ function App() {
                 <input
                     type="number"
                     step="0.01"
-                    id="altura"
-                    value={formulario.altura}
-                    onChange={manejarCambio}
+                    value={altura}
+                    onChange={(e)=>setAltura(e.target.value)}
                     required
                 />
 
@@ -98,9 +83,8 @@ function App() {
                 <input
                     type="number"
                     step="0.1"
-                    id="peso"
-                    value={formulario.peso}
-                    onChange={manejarCambio}
+                    value={peso}
+                    onChange={(e)=>setPeso(e.target.value)}
                     required
                 />
 
@@ -130,59 +114,63 @@ function App() {
 
                 <tbody>
 
-                    {
+                    {personas.map(function(persona, indice){
 
-                        personas.map((persona, indice) => {
+                        const imc = persona.peso / (persona.altura * persona.altura);
 
-                            const imc =
-                                persona.peso /
-                                (persona.altura * persona.altura);
+                        return (
 
-                            return (
+                            <tr key={indice}>
 
-                                <tr key={indice}>
+                                <td>{persona.nombre}</td>
 
-                                    <td>{persona.nombre}</td>
+                                <td>{persona.apellido}</td>
 
-                                    <td>{persona.apellido}</td>
+                                <td>{persona.edad}</td>
 
-                                    <td>{persona.edad}</td>
+                                <td>{persona.altura}</td>
 
-                                    <td>{persona.altura}</td>
+                                <td>{persona.peso}</td>
 
-                                    <td>{persona.peso}</td>
+                                <td>{imc.toFixed(2)}</td>
 
-                                    <td>{imc.toFixed(2)}</td>
+                                <td>
 
-                                    <td>
+                                    <button
+                                        className="eliminar"
+                                        onClick={function(){
 
-                                        <button
-                                            className="eliminar"
-                                            onClick={() => eliminarPersona(indice)}
-                                        >
-                                            Eliminar
-                                        </button>
+                                            eliminarPersona(indice);
 
-                                    </td>
+                                        }}
+                                    >
 
-                                </tr>
+                                        Eliminar
 
-                            );
+                                    </button>
 
-                        })
+                                </td>
 
-                    }
+                            </tr>
+
+                        );
+
+                    })}
 
                 </tbody>
 
             </table>
 
-        </>
+        </div>
 
     );
 
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+ReactDOM.render(
 
-root.render(<App />);
+    <App />,
+
+    document.getElementById("root")
+
+);
