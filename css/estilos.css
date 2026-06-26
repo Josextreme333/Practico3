@@ -71,3 +71,25 @@ button:hover{
     background:#356ea3;
 }
 
+/* ---------------- FLEXBOX ---------------- */
+
+.contenedor{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    margin-top:30px;
+}
+
+.tarjeta{
+    width:220px;
+    background:white;
+    padding:20px;
+    border-radius:8px;
+    text-align:center;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+.resaltada{
+    background:#ffe599;
+}
