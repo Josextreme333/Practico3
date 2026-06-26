@@ -93,3 +93,48 @@ button:hover{
 .resaltada{
     background:#ffe599;
 }
+
+/* ---------------- FORMULARIO ---------------- */
+
+form{
+    background:white;
+    padding:20px;
+    border-radius:8px;
+    margin-bottom:30px;
+}
+
+form label{
+    display:block;
+    margin-top:10px;
+}
+
+form input{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+}
+
+th,td{
+    border:1px solid #ccc;
+    padding:10px;
+    text-align:center;
+}
+
+th{
+    background:#1f4e79;
+    color:white;
+}
+
+.eliminar{
+    background:#c0392b;
+}
+
+.eliminar:hover{
+    background:#e74c3c;
+}
