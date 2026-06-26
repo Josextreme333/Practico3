@@ -70,3 +70,10 @@ function mostrarPersonas(){
 
 }
 
+function eliminarPersona(indice){
+
+    personas.splice(indice,1);
+
+    mostrarPersonas();
+
+}
