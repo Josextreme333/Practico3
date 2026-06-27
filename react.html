@@ -19,20 +19,15 @@
 </header>
 
 <main>
-
     <a href="index.html" class="volver">← Volver al inicio</a>
-
     <div id="root"></div>
-
 </main>
 
-<!-- Script inline en lugar de archivo externo -->
 <script type="text/babel">
     const { useState } = React;
 
     function App() {
         const [personas, setPersonas] = useState([]);
-
         const [nombre, setNombre] = useState("");
         const [apellido, setApellido] = useState("");
         const [edad, setEdad] = useState("");
@@ -42,7 +37,6 @@
         function agregarPersona(e) {
             e.preventDefault();
 
-            // Validar que los campos no estén vacíos
             if (!nombre || !apellido || !edad || !altura || !peso) {
                 alert("Por favor completa todos los campos");
                 return;
@@ -57,7 +51,6 @@
             };
 
             setPersonas([...personas, nuevaPersona]);
-
             setNombre("");
             setApellido("");
             setEdad("");
@@ -70,10 +63,11 @@
         }
 
         return (
-            <div>
-                <form onSubmit={agregarPersona}>
+            <div style={{ padding: "20px" }}>
+                <h2>Formulario de Personas</h2>
+                <form onSubmit={agregarPersona} style={{ marginBottom: "30px", display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px" }}>
                     <div>
-                        <label>Nombre</label>
+                        <label>Nombre:</label>
                         <input
                             type="text"
                             value={nombre}
@@ -83,7 +77,7 @@
                     </div>
 
                     <div>
-                        <label>Apellido</label>
+                        <label>Apellido:</label>
                         <input
                             type="text"
                             value={apellido}
@@ -93,7 +87,7 @@
                     </div>
 
                     <div>
-                        <label>Edad</label>
+                        <label>Edad:</label>
                         <input
                             type="number"
                             value={edad}
@@ -103,7 +97,7 @@
                     </div>
 
                     <div>
-                        <label>Altura (m)</label>
+                        <label>Altura (m):</label>
                         <input
                             type="number"
                             step="0.01"
@@ -114,7 +108,7 @@
                     </div>
 
                     <div>
-                        <label>Peso (kg)</label>
+                        <label>Peso (kg):</label>
                         <input
                             type="number"
                             step="0.1"
@@ -124,49 +118,55 @@
                         />
                     </div>
 
-                    <button type="submit">Agregar Persona</button>
+                    <button type="submit" style={{ padding: "10px", backgroundColor: "#007bff", color: "white", border: "none", cursor: "pointer", borderRadius: "4px" }}>
+                        Agregar Persona
+                    </button>
                 </form>
 
-                <table border="1" cellPadding="10" cellSpacing="0">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Edad</th>
-                            <th>Altura (m)</th>
-                            <th>Peso (kg)</th>
-                            <th>IMC</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {personas.map((persona, indice) => {
-                            const imc = (persona.peso / (persona.altura * persona.altura)).toFixed(2);
-
-                            return (
-                                <tr key={indice}>
-                                    <td>{persona.nombre}</td>
-                                    <td>{persona.apellido}</td>
-                                    <td>{persona.edad}</td>
-                                    <td>{persona.altura}</td>
-                                    <td>{persona.peso}</td>
-                                    <td>{imc}</td>
-                                    <td>
-                                        <button
-                                            className="eliminar"
-                                            onClick={() => eliminarPersona(indice)}
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </td>
+                {personas.length === 0 ? (
+                    <p style={{ color: "#999" }}>No hay personas registradas</p>
+                ) : (
+                    <div style={{ overflowX: "auto" }}>
+                        <table style={{ borderCollapse: "collapse", width: "100%", border: "1px solid #ddd" }}>
+                            <thead>
+                                <tr style={{ backgroundColor: "#f2f2f2" }}>
+                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "left" }}>Nombre</th>
+                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "left" }}>Apellido</th>
+                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>Edad</th>
+                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>Altura (m)</th>
+                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>Peso (kg)</th>
+                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>IMC</th>
+                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>Acción</th>
                                 </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                            </thead>
 
-                {personas.length === 0 && <p>No hay personas registradas</p>}
+                            <tbody>
+                                {personas.map((persona, indice) => {
+                                    const imc = (persona.peso / (persona.altura * persona.altura)).toFixed(2);
+
+                                    return (
+                                        <tr key={indice} style={{ borderBottom: "1px solid #ddd" }}>
+                                            <td style={{ border: "1px solid #ddd", padding: "12px" }}>{persona.nombre}</td>
+                                            <td style={{ border: "1px solid #ddd", padding: "12px" }}>{persona.apellido}</td>
+                                            <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>{persona.edad}</td>
+                                            <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>{persona.altura}</td>
+                                            <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>{persona.peso}</td>
+                                            <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center", fontWeight: "bold" }}>{imc}</td>
+                                            <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+                                                <button
+                                                    onClick={() => eliminarPersona(indice)}
+                                                    style={{ padding: "6px 12px", backgroundColor: "#dc3545", color: "white", border: "none", cursor: "pointer", borderRadius: "4px" }}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
         );
     }
@@ -179,3 +179,4 @@
 
 </body>
 </html>
+
