@@ -7,8 +7,8 @@
 
     <link rel="stylesheet" href="css/estilos.css">
 
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 
@@ -26,7 +26,156 @@
 
 </main>
 
-<script type="text/babel" src="./react/app.jsx"></script>
+<!-- Script inline en lugar de archivo externo -->
+<script type="text/babel">
+    const { useState } = React;
+
+    function App() {
+        const [personas, setPersonas] = useState([]);
+
+        const [nombre, setNombre] = useState("");
+        const [apellido, setApellido] = useState("");
+        const [edad, setEdad] = useState("");
+        const [altura, setAltura] = useState("");
+        const [peso, setPeso] = useState("");
+
+        function agregarPersona(e) {
+            e.preventDefault();
+
+            // Validar que los campos no estén vacíos
+            if (!nombre || !apellido || !edad || !altura || !peso) {
+                alert("Por favor completa todos los campos");
+                return;
+            }
+
+            const nuevaPersona = {
+                nombre,
+                apellido,
+                edad: Number(edad),
+                altura: Number(altura),
+                peso: Number(peso)
+            };
+
+            setPersonas([...personas, nuevaPersona]);
+
+            setNombre("");
+            setApellido("");
+            setEdad("");
+            setAltura("");
+            setPeso("");
+        }
+
+        function eliminarPersona(indice) {
+            setPersonas(personas.filter((_, i) => i !== indice));
+        }
+
+        return (
+            <div>
+                <form onSubmit={agregarPersona}>
+                    <div>
+                        <label>Nombre</label>
+                        <input
+                            type="text"
+                            value={nombre}
+                            onChange={(e) => setNombre(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label>Apellido</label>
+                        <input
+                            type="text"
+                            value={apellido}
+                            onChange={(e) => setApellido(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label>Edad</label>
+                        <input
+                            type="number"
+                            value={edad}
+                            onChange={(e) => setEdad(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label>Altura (m)</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            value={altura}
+                            onChange={(e) => setAltura(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label>Peso (kg)</label>
+                        <input
+                            type="number"
+                            step="0.1"
+                            value={peso}
+                            onChange={(e) => setPeso(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <button type="submit">Agregar Persona</button>
+                </form>
+
+                <table border="1" cellPadding="10" cellSpacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Edad</th>
+                            <th>Altura (m)</th>
+                            <th>Peso (kg)</th>
+                            <th>IMC</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {personas.map((persona, indice) => {
+                            const imc = (persona.peso / (persona.altura * persona.altura)).toFixed(2);
+
+                            return (
+                                <tr key={indice}>
+                                    <td>{persona.nombre}</td>
+                                    <td>{persona.apellido}</td>
+                                    <td>{persona.edad}</td>
+                                    <td>{persona.altura}</td>
+                                    <td>{persona.peso}</td>
+                                    <td>{imc}</td>
+                                    <td>
+                                        <button
+                                            className="eliminar"
+                                            onClick={() => eliminarPersona(indice)}
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+
+                {personas.length === 0 && <p>No hay personas registradas</p>}
+            </div>
+        );
+    }
+
+    ReactDOM.render(
+        <App />,
+        document.getElementById("root")
+    );
+</script>
 
 </body>
 </html>
