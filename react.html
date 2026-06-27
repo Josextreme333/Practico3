@@ -6,7 +6,6 @@
     <title>Ejercicio 3 - React</title>
     <link rel="stylesheet" href="css/estilos.css">
 </head>
-
 <body>
 
 <header>
@@ -18,167 +17,131 @@
     <div id="root"></div>
 </main>
 
-<!-- PRIMERO cargamos React y ReactDOM -->
-<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<!-- DESPUÉS nuestro código con type="text/babel" -->
 <script type="text/babel">
-    const { useState } = React;
+const { useState } = React;
 
-    function App() {
-        const [personas, setPersonas] = useState([]);
-        const [nombre, setNombre] = useState("");
-        const [apellido, setApellido] = useState("");
-        const [edad, setEdad] = useState("");
-        const [altura, setAltura] = useState("");
-        const [peso, setPeso] = useState("");
+function App() {
+    const [personas, setPersonas] = useState([]);
+    const [nombre, setNombre] = useState("");
+    const [apellido, setApellido] = useState("");
+    const [edad, setEdad] = useState("");
+    const [altura, setAltura] = useState("");
+    const [peso, setPeso] = useState("");
 
-        function agregarPersona(e) {
-            e.preventDefault();
+    function agregarPersona(e) {
+        e.preventDefault();
 
-            if (!nombre || !apellido || !edad || !altura || !peso) {
-                alert("Por favor completa todos los campos");
-                return;
-            }
-
-            const nuevaPersona = {
-                nombre,
-                apellido,
-                edad: Number(edad),
-                altura: Number(altura),
-                peso: Number(peso)
-            };
-
-            setPersonas([...personas, nuevaPersona]);
-            setNombre("");
-            setApellido("");
-            setEdad("");
-            setAltura("");
-            setPeso("");
+        if (!nombre || !apellido || !edad || !altura || !peso) {
+            alert("Por favor completa todos los campos");
+            return;
         }
 
-        function eliminarPersona(indice) {
-            setPersonas(personas.filter((_, i) => i !== indice));
-        }
+        const nuevaPersona = {
+            nombre,
+            apellido,
+            edad: Number(edad),
+            altura: Number(altura),
+            peso: Number(peso)
+        };
 
-        return (
-            <div style={{ padding: "20px" }}>
-                <h2>Formulario de Personas</h2>
-                <form onSubmit={agregarPersona} style={{ marginBottom: "30px", display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px" }}>
-                    <div>
-                        <label>Nombre:</label>
-                        <input
-                            type="text"
-                            value={nombre}
-                            onChange={(e) => setNombre(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label>Apellido:</label>
-                        <input
-                            type="text"
-                            value={apellido}
-                            onChange={(e) => setApellido(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label>Edad:</label>
-                        <input
-                            type="number"
-                            value={edad}
-                            onChange={(e) => setEdad(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label>Altura (m):</label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            value={altura}
-                            onChange={(e) => setAltura(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label>Peso (kg):</label>
-                        <input
-                            type="number"
-                            step="0.1"
-                            value={peso}
-                            onChange={(e) => setPeso(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <button type="submit" style={{ padding: "10px", backgroundColor: "#007bff", color: "white", border: "none", cursor: "pointer", borderRadius: "4px" }}>
-                        Agregar Persona
-                    </button>
-                </form>
-
-                {personas.length === 0 ? (
-                    <p style={{ color: "#999" }}>No hay personas registradas</p>
-                ) : (
-                    <div style={{ overflowX: "auto" }}>
-                        <table style={{ borderCollapse: "collapse", width: "100%", border: "1px solid #ddd" }}>
-                            <thead>
-                                <tr style={{ backgroundColor: "#f2f2f2" }}>
-                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "left" }}>Nombre</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "left" }}>Apellido</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>Edad</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>Altura (m)</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>Peso (kg)</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>IMC</th>
-                                    <th style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>Acción</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {personas.map((persona, indice) => {
-                                    const imc = (persona.peso / (persona.altura * persona.altura)).toFixed(2);
-
-                                    return (
-                                        <tr key={indice} style={{ borderBottom: "1px solid #ddd" }}>
-                                            <td style={{ border: "1px solid #ddd", padding: "12px" }}>{persona.nombre}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "12px" }}>{persona.apellido}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>{persona.edad}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>{persona.altura}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>{persona.peso}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center", fontWeight: "bold" }}>{imc}</td>
-                                            <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
-                                                <button
-                                                    onClick={() => eliminarPersona(indice)}
-                                                    style={{ padding: "6px 12px", backgroundColor: "#dc3545", color: "white", border: "none", cursor: "pointer", borderRadius: "4px" }}
-                                                >
-                                                    Eliminar
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-            </div>
-        );
+        setPersonas([...personas, nuevaPersona]);
+        setNombre("");
+        setApellido("");
+        setEdad("");
+        setAltura("");
+        setPeso("");
     }
 
-    ReactDOM.render(
-        <App />,
-        document.getElementById("root")
+    function eliminarPersona(indice) {
+        setPersonas(personas.filter((_, i) => i !== indice));
+    }
+
+    return (
+        <div style={{ padding: "20px" }}>
+            <h2>Formulario de Personas</h2>
+            <form onSubmit={agregarPersona} style={{ marginBottom: "30px", display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px" }}>
+                <div>
+                    <label>Nombre:</label>
+                    <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
+                </div>
+
+                <div>
+                    <label>Apellido:</label>
+                    <input type="text" value={apellido} onChange={(e) => setApellido(e.target.value)} required />
+                </div>
+
+                <div>
+                    <label>Edad:</label>
+                    <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} required />
+                </div>
+
+                <div>
+                    <label>Altura (m):</label>
+                    <input type="number" step="0.01" value={altura} onChange={(e) => setAltura(e.target.value)} required />
+                </div>
+
+                <div>
+                    <label>Peso (kg):</label>
+                    <input type="number" step="0.1" value={peso} onChange={(e) => setPeso(e.target.value)} required />
+                </div>
+
+                <button type="submit" style={{ padding: "10px", backgroundColor: "#007bff", color: "white", border: "none", cursor: "pointer", borderRadius: "4px" }}>
+                    Agregar Persona
+                </button>
+            </form>
+
+            {personas.length === 0 ? (
+                <p style={{ color: "#999" }}>No hay personas registradas</p>
+            ) : (
+                <div style={{ overflowX: "auto" }}>
+                    <table style={{ borderCollapse: "collapse", width: "100%", border: "1px solid #ddd" }}>
+                        <thead>
+                            <tr style={{ backgroundColor: "#f2f2f2" }}>
+                                <th style={{ border: "1px solid #ddd", padding: "12px" }}>Nombre</th>
+                                <th style={{ border: "1px solid #ddd", padding: "12px" }}>Apellido</th>
+                                <th style={{ border: "1px solid #ddd", padding: "12px" }}>Edad</th>
+                                <th style={{ border: "1px solid #ddd", padding: "12px" }}>Altura (m)</th>
+                                <th style={{ border: "1px solid #ddd", padding: "12px" }}>Peso (kg)</th>
+                                <th style={{ border: "1px solid #ddd", padding: "12px" }}>IMC</th>
+                                <th style={{ border: "1px solid #ddd", padding: "12px" }}>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {personas.map((persona, indice) => {
+                                const imc = (persona.peso / (persona.altura * persona.altura)).toFixed(2);
+                                return (
+                                    <tr key={indice} style={{ borderBottom: "1px solid #ddd" }}>
+                                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>{persona.nombre}</td>
+                                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>{persona.apellido}</td>
+                                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>{persona.edad}</td>
+                                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>{persona.altura}</td>
+                                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>{persona.peso}</td>
+                                        <td style={{ border: "1px solid #ddd", padding: "12px", fontWeight: "bold" }}>{imc}</td>
+                                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
+                                            <button onClick={() => eliminarPersona(indice)} style={{ padding: "6px 12px", backgroundColor: "#dc3545", color: "white", border: "none", cursor: "pointer", borderRadius: "4px" }}>
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </div>
     );
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
 </script>
 
 </body>
 </html>
+
 
 
